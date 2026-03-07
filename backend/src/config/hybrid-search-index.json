@@ -1,0 +1,19 @@
+{
+  "mappings": {
+    "dynamic": true,
+    "fields": {
+      "embedding": {
+        "dimensions": 384,
+        "similarity": "cosine",
+        "type": "knnVector"
+      },
+      "schemeId": {
+        "type": "objectId"
+      },
+      "text": {
+        "type": "string",
+        "analyzer": "lucene.standard"
+      }
+    }
+  }
+}

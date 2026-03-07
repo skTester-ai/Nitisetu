@@ -1,0 +1,172 @@
+[
+  {
+    "_id": "699ca398755acd136d9d2204",
+    "name": "Master Circular Kisan Credit Card (KCC) Scheme",
+    "category": "credit"
+  },
+  {
+    "_id": "699ca3b4755acd136d9d22f6",
+    "name": "Revised Kisan Credit Card (KCC) Scheme",
+    "category": "credit"
+  },
+  {
+    "_id": "699ca3cd755acd136d9d23e4",
+    "name": "Scheme to cover term loans for agriculture & allied activities under KCC",
+    "category": "credit"
+  },
+  {
+    "_id": "699ca3e7755acd136d9d24b9",
+    "name": "Guidelines for Implementation of New Scheme PMKUSUSM",
+    "category": "energy"
+  },
+  {
+    "_id": "699ca40f755acd136d9d25e6",
+    "name": "PM KUSUM Guidelines",
+    "category": "energy"
+  },
+  {
+    "_id": "699ca43a755acd136d9d2785",
+    "name": "PM’s VISION for Farmers Harvesting Solar Enegy",
+    "category": "energy"
+  },
+  {
+    "_id": "699ca45f755acd136d9d286f",
+    "name": "CPD Guidelines New",
+    "category": "horticulture"
+  },
+  {
+    "_id": "699ca4a2755acd136d9d2a30",
+    "name": "midhGuidelines midh(English)",
+    "category": "horticulture"
+  },
+  {
+    "_id": "699ca4d8755acd136d9d2c2c",
+    "name": "Operational Manual MIDH SURAKSHA",
+    "category": "horticulture"
+  },
+  {
+    "_id": "699ca4f6755acd136d9d2d1c",
+    "name": "PM KMY FAQs",
+    "category": "income_support"
+  },
+  {
+    "_id": "699ca519755acd136d9d2e25",
+    "name": "PM KMY Operational Guidelines",
+    "category": "income_support"
+  },
+  {
+    "_id": "699ca53a755acd136d9d2f4e",
+    "name": "PM KMY Salient Features",
+    "category": "income_support"
+  },
+  {
+    "_id": "699ca553755acd136d9d3022",
+    "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "category": "infrastructure"
+  },
+  {
+    "_id": "699ca56c755acd136d9d30f9",
+    "name": "Agriculture Infrastructure Fund (AIF)",
+    "category": "infrastructure"
+  },
+  {
+    "_id": "699ca590755acd136d9d31ed",
+    "name": "aws gui cre",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca5c2755acd136d9d33be",
+    "name": "FINAL UPISOGs 23.03.2016",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca5df755acd136d9d34c7",
+    "name": "FINAL WBCIS OGs 23.03.2016",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca5fa755acd136d9d35b2",
+    "name": "NAIS SCHEME",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca61e755acd136d9d36e6",
+    "name": "New Schemes english",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca65d755acd136d9d3807",
+    "name": "operational guidelines pmfby",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca6c6755acd136d9d3c2f",
+    "name": "PMFBY Features",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca6f8755acd136d9d3d02",
+    "name": "Revamped Operational Guidelines 17th August 2020",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca74a755acd136d9d4025",
+    "name": "RWBCIS Revised Guidelines 1",
+    "category": "insurance"
+  },
+  {
+    "_id": "699ca76c755acd136d9d4124",
+    "name": "NLMOperationalGuidelines",
+    "category": "livestock"
+  },
+  {
+    "_id": "699ca798755acd136d9d4293",
+    "name": "RevisedSOProcedureforReleaseofCapitalSubsidyvidenotificationdated",
+    "category": "livestock"
+  },
+  {
+    "_id": "699ca7ba755acd136d9d43c3",
+    "name": "SoP NLM EDP",
+    "category": "livestock"
+  },
+  {
+    "_id": "699ca7d8755acd136d9d44d0",
+    "name": "mksp agriculture guidelines",
+    "category": "other"
+  },
+  {
+    "_id": "699ca7f5755acd136d9d45d0",
+    "name": "MKSP NTFP Guidelines approved version",
+    "category": "other"
+  },
+  {
+    "_id": "699ca81b755acd136d9d46eb",
+    "name": "Circular Of Implementation Of Soil Health Card",
+    "category": "soil"
+  },
+  {
+    "_id": "699ca835755acd136d9d47ea",
+    "name": "Citizen Charter for Soil Testing and Issue of Soil Health Card",
+    "category": "soil"
+  },
+  {
+    "_id": "699ca84d755acd136d9d48b8",
+    "name": "Implementation of Soil Health Card (SHC) Scheme",
+    "category": "soil"
+  },
+  {
+    "_id": "699ca865755acd136d9d499e",
+    "name": "List of mini soil labs",
+    "category": "soil"
+  },
+  {
+    "_id": "699ca881755acd136d9d4a6c",
+    "name": "National Mission for Sustainable Agriculture (NMSA) Operational Guidelines",
+    "category": "soil"
+  },
+  {
+    "_id": "699ca8a8755acd136d9d4be1",
+    "name": "Soil Health & Fertility Scheme under Rashtriya Krishi Vikas Yojana(RKVY)",
+    "category": "soil"
+  }
+]

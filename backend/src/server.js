@@ -4,7 +4,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
-const path = require("path"); //Added path library
 
 // Load config first (validates env vars)
 const config = require('./config/env');

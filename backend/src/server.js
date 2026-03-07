@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
+const path = require("path"); //Added path library
 
 // Load config first (validates env vars)
 const config = require('./config/env');
@@ -35,6 +36,7 @@ app.set("trust proxy", 1); // Trust reverse proxy (Vercel/Render) for rate-limit
 
 // Serve scheme documents statically
 app.use('/api/schemes/docs', express.static(path.join(__dirname, '..', 'data', 'schemes')));
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));  //For production
 
 // ── Security & Parsing Middleware ─────────────────────────
 app.use(helmet());
@@ -67,6 +69,12 @@ app.get('/api/health', (req, res) => {
     embeddingModelReady: embeddingService.isReady(),
     uptime: Math.round(process.uptime()),
   });
+});
+
+
+// ── Initial upload of react ──────────────────────────────────────────
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
 });
 
 // ── API Routes ────────────────────────────────────────────

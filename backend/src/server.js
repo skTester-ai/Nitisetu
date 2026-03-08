@@ -1,22 +1,18 @@
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 
-// Load config first (validates env vars)
 const config = require('./config/env');
 const { connectDB, disconnectDB } = require('./config/database');
 const { closeDriver: closeNeo4j } = require('./config/neo4j');
 const logger = require('./config/logger');
 const embeddingService = require('./services/embeddingService');
 
-// Middleware
 const { errorHandler } = require('./middleware/errorHandler');
 const { generalLimiter } = require('./middleware/rateLimiter');
 
-// Routes
 const schemeRoutes = require('./routes/schemeRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const eligibilityRoutes = require('./routes/eligibilityRoutes');
@@ -30,19 +26,14 @@ const scanRoutes = require('./routes/scanRoutes');
 const whatsappRoutes = require('./routes/whatsappRoutes');
 
 const app = express();
-app.set("trust proxy", 1); // Trust reverse proxy (Vercel/Render) for rate-limiting
-
-
-// Serve scheme documents statically
-app.use('/api/schemes/docs', express.static(path.join(__dirname, '..', 'data', 'schemes')));
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));  //For production
+app.set("trust proxy", 1);
 
 // ── Security & Parsing Middleware ─────────────────────────
 app.use(compression());
 app.use(cors({
   origin: config.nodeEnv === 'production'
     ? [config.frontendUrl]
-    : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173','https://nitisetu.onrender.com' , 'http://192.168.29.117:5173'],
+    : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173', 'https://nitisetu.onrender.com', 'http://192.168.29.117:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
@@ -57,6 +48,28 @@ app.use(morgan('dev', {
 // ── Rate Limiting ─────────────────────────────────────────
 app.use(generalLimiter);
 
+// ── Helmet (FIX: explicitly set COOP to unsafe-none for Google Sign-In popup) ──
+app.use(
+  helmet({
+    crossOriginOpenerPolicy: { policy: "unsafe-none" },  // ✅ Fixes postMessage error
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://accounts.google.com"],
+        frameSrc: ["'self'", "https://accounts.google.com"],
+        connectSrc: ["'self'", "https://accounts.google.com"],
+        imgSrc: ["'self'", "data:", "https://lh3.googleusercontent.com"],
+        styleSrc: ["'self'", "'unsafe-inline'"]
+      }
+    }
+  })
+);
+
+// ── Static Files ──────────────────────────────────────────
+app.use('/api/schemes/docs', express.static(path.join(__dirname, '..', 'data', 'schemes')));
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
 // ── Health Check ──────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({
@@ -69,68 +82,22 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// ── Updated code for GSI ─────────────────────────
-app.use(
-  helmet({
-    crossOriginOpenerPolicy: false,
-    crossOriginEmbedderPolicy: false,
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "https://accounts.google.com"
-        ],
-        frameSrc: [
-          "'self'",
-          "https://accounts.google.com"
-        ],
-        connectSrc: [
-          "'self'",
-          "https://accounts.google.com"
-        ],
-        imgSrc: [
-          "'self'",
-          "data:",
-          "https://lh3.googleusercontent.com"
-        ],
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'"
-        ]
-      }
-    }
-  })
-);
+// ── API Routes (MUST come before the wildcard catch-all) ──  ✅ Fixed order
+app.use('/api/schemes', schemeRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/eligibility', eligibilityRoutes);
+app.use('/api/voice', voiceRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/graph', graphRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/scan', scanRoutes);
+app.use('/api/whatsapp', whatsappRoutes);
 
-// ── Initial upload of react ──────────────────────────────────────────
+// ── React SPA Fallback (MUST come after API routes) ───────  ✅ Moved to end
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
 });
-
-//API Routes after the initial launch
-app.use('/api/schemes', schemeRoutes);
-app.use('/api/profiles', profileRoutes);
-app.use('/api/eligibility', eligibilityRoutes);
-app.use('/api/voice', voiceRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/graph', graphRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/scan', scanRoutes);
-app.use('/api/whatsapp', whatsappRoutes);
-
-// ── API Routes ────────────────────────────────────────────
-app.use('/api/schemes', schemeRoutes);
-app.use('/api/profiles', profileRoutes);
-app.use('/api/eligibility', eligibilityRoutes);
-app.use('/api/voice', voiceRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/graph', graphRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/scan', scanRoutes);
-app.use('/api/whatsapp', whatsappRoutes);
 
 // ── 404 Handler ───────────────────────────────────────────
 app.use((req, res) => {
@@ -146,15 +113,12 @@ app.use(errorHandler);
 // ── Server Startup ────────────────────────────────────────
 async function startServer() {
   try {
-    // 1. Connect to MongoDB
     logger.info('Connecting to MongoDB Atlas...');
     await connectDB(config.mongodbUri);
 
-    // 2. Pre-load embedding model (first run downloads ~80MB)
     logger.info('Initializing embedding model (first run downloads ~80MB)...');
     await embeddingService.initialize();
 
-    // 3. Start Express server
     const server = app.listen(config.port, () => {
       logger.info(`╔══════════════════════════════════════════╗`);
       logger.info(`║  Niti-Setu Backend v1.0.0                ║`);
@@ -165,7 +129,6 @@ async function startServer() {
       logger.info(`╚══════════════════════════════════════════╝`);
     });
 
-    // ── Graceful Shutdown ────────────────────────────────
     const shutdown = async (signal) => {
       logger.info(`${signal} received. Shutting down gracefully...`);
       server.close(async () => {
@@ -174,7 +137,6 @@ async function startServer() {
         logger.info('Server shut down complete');
         process.exit(0);
       });
-      // Force shutdown after 10s
       setTimeout(() => {
         logger.error('Forced shutdown after timeout');
         process.exit(1);

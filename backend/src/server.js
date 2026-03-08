@@ -38,7 +38,6 @@ app.use('/api/schemes/docs', express.static(path.join(__dirname, '..', 'data', '
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));  //For production
 
 // ── Security & Parsing Middleware ─────────────────────────
-app.use(helmet());
 app.use(compression());
 app.use(cors({
   origin: config.nodeEnv === 'production'
@@ -70,6 +69,37 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// ── Updated code for GSI ─────────────────────────
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "https://accounts.google.com"
+        ],
+        frameSrc: [
+          "'self'",
+          "https://accounts.google.com"
+        ],
+        connectSrc: [
+          "'self'",
+          "https://accounts.google.com"
+        ],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "https://lh3.googleusercontent.com"
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'"
+        ]
+      }
+    }
+  })
+);
 
 // ── Initial upload of react ──────────────────────────────────────────
 app.get("*", (req, res) => {

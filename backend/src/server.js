@@ -72,6 +72,8 @@ app.get('/api/health', (req, res) => {
 // ── Updated code for GSI ─────────────────────────
 app.use(
   helmet({
+    crossOriginOpenerPolicy: false,
+    crossOriginEmbedderPolicy: false,
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
@@ -105,6 +107,18 @@ app.use(
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
 });
+
+//API Routes after the initial launch
+app.use('/api/schemes', schemeRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/eligibility', eligibilityRoutes);
+app.use('/api/voice', voiceRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/graph', graphRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/scan', scanRoutes);
+app.use('/api/whatsapp', whatsappRoutes);
 
 // ── API Routes ────────────────────────────────────────────
 app.use('/api/schemes', schemeRoutes);

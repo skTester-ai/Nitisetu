@@ -58,7 +58,7 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "https://accounts.google.com"],
         frameSrc: ["'self'", "https://accounts.google.com"],
-        connectSrc: ["'self'", "https://accounts.google.com"],
+        connectSrc: ["'self'", "https://accounts.google.com", "https://raw.githack.com"],
         imgSrc: ["'self'", "data:", "https://lh3.googleusercontent.com"],
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"]

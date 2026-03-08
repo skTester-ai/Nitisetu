@@ -60,7 +60,8 @@ app.use(
         frameSrc: ["'self'", "https://accounts.google.com"],
         connectSrc: ["'self'", "https://accounts.google.com"],
         imgSrc: ["'self'", "data:", "https://lh3.googleusercontent.com"],
-        styleSrc: ["'self'", "'unsafe-inline'"]
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"]
       }
     }
   })

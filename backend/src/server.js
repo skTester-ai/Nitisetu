@@ -49,29 +49,7 @@ app.use(morgan('dev', {
 app.use(generalLimiter);
 
 // ── Helmet (FIX: explicitly set COOP to unsafe-none for Google Sign-In popup) ──
-app.use( 
-  helmet({ 
-    crossOriginOpenerPolicy: { policy: "unsafe-none" },
-    crossOriginEmbedderPolicy: false, 
-    contentSecurityPolicy: { 
-      directives: { 
-        defaultSrc: ["'self'"], 
-        scriptSrc: ["'self'", "https://accounts.google.com", "blob:"], // ✅ fixes blob worker errors
-        workerSrc: ["'self'", "blob:"], // ✅ explicitly set so script-src isn't used as fallback
-        frameSrc: ["'self'", "https://accounts.google.com"], 
-        connectSrc: [
-          "'self'", 
-          "https://accounts.google.com", 
-          "https://raw.githack.com",
-          "https://raw.githubusercontent.com", // ✅ fixes the HDR fetch (actual URL being used)
-        ],
-        imgSrc: ["'self'", "data:", "https://lh3.googleusercontent.com"], 
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], 
-        fontSrc: ["'self'", "https://fonts.gstatic.com"] 
-      } 
-    } 
-  }) 
-);
+app.use(helmet());
 
 // ── Static Files ──────────────────────────────────────────
 app.use('/api/schemes/docs', express.static(path.join(__dirname, '..', 'data', 'schemes')));

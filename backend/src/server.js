@@ -49,7 +49,12 @@ app.use(morgan('dev', {
 app.use(generalLimiter);
 
 // ── Helmet (FIX: explicitly set COOP to unsafe-none for Google Sign-In popup) ──
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    xDownloadOptions: false,
+  }),
+);
 
 // ── Static Files ──────────────────────────────────────────
 app.use('/api/schemes/docs', express.static(path.join(__dirname, '..', 'data', 'schemes')));
@@ -107,7 +112,7 @@ async function startServer() {
     const server = app.listen(config.port, () => {
       logger.info(`╔══════════════════════════════════════════╗`);
       logger.info(`║  Niti-Setu Backend v1.0.0                ║`);
-      logger.info(`║  Port: ${config.port}                            ║`);
+      logger.info(`║  Port: ${config.port}                    ║`);
       logger.info(`║  Env:  ${config.nodeEnv.padEnd(25)}      ║`);
       logger.info(`║  Embedding model: Ready                  ║`);
       logger.info(`║  MongoDB: Connected                      ║`);

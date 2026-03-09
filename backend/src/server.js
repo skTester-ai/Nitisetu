@@ -53,6 +53,12 @@ app.use(
   helmet({
     contentSecurityPolicy: false,
     xDownloadOptions: false,
+    connectSrc: [
+          "'self'", 
+          "https://accounts.google.com", 
+          "https://raw.githack.com",
+          "https://raw.githubusercontent.com", // ✅ fixes the HDR fetch (actual URL being used)
+        ]
   }),
 );
 
